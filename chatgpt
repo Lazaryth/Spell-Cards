@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Searchable Database</title>
+  <style>
+    #searchInput {
+      margin-bottom: 10px;
+    }
+    #itemList {
+      list-style-type: none;
+      padding: 0;
+    }
+    .selected {
+      background-color: yellow;
+    }
+    #selectedItems {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Searchable Database</h1>
+
+  <input type="text" id="searchInput" placeholder="Search items">
+  
+  <ul id="itemList">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+    <li>Item 4</li>
+    <li>Item 5</li>
+  </ul>
+
+  <h2>Selected Items:</h2>
+  <div id="selectedItems"></div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const itemList = document.getElementById("itemList");
+    const selectedItems = document.getElementById("selectedItems");
+    
+    // Initialize an array to store selected items
+    let selected = [];
+
+    // Add event listener for search input
+    searchInput.addEventListener("keyup", function(event) {
+      const searchValue = event.target.value.toLowerCase();
+      const items = itemList.getElementsByTagName("li");
+
+      for (let i = 0; i < items.length; i++) {
+        const itemText = items[i].textContent.toLowerCase();
+        if (itemText.includes(searchValue)) {
+          items[i].style.display = "block";
+        } else {
+          items[i].style.display = "none";
+        }
+      }
+    });
+
+    // Add event listener for item selection
+    itemList.addEventListener("click", function(event) {
+      const selectedItem = event.target;
+      selectedItem.classList.toggle("selected");
+      const itemText = selectedItem.textContent;
+      
+      // Check if the item is already selected
+      if (selected.includes(itemText)) {
+        // If it's already selected, remove it from the selected array
+        selected = selected.filter(item => item !== itemText);
+      } else {
+        // If it's not selected, add it to the selected array
+        selected.push(itemText);
+      }
+
+      // Update the selected items display
+      selectedItems.innerHTML = selected.map(item => `<p>${item}</p>`).join("");
+    });
+  </script>
+</body>
+</html>
